@@ -1,6 +1,6 @@
 <div align="center">
   <img src="assets/logo-black.svg" alt="buchida" width="280" />
-  <p><strong>Developer-first email API with CJK support</strong></p>
+  <p><strong>支持CJK的开发者优先邮件API</strong></p>
 
   [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md) | [中文](README.zh.md)
 
@@ -9,21 +9,21 @@
 
 ---
 
-The official Ruby SDK for the [buchida](https://buchida.com) email API.
+[buchida](https://buchida.com)邮件API的官方Ruby SDK。
 
-## Installation
+## 安装
 
 ```bash
 gem install buchida
 ```
 
-Or add to your Gemfile:
+或添加到Gemfile:
 
 ```ruby
 gem "buchida"
 ```
 
-## Quick Start
+## 快速开始
 
 ```ruby
 require "buchida"
@@ -33,25 +33,25 @@ client = Buchida::Client.new("bc_live_xxxxxxxxxxxxxxxxxxxxx")
 result = client.emails.send(
   from: "hello@yourdomain.com",
   to: "user@example.com",
-  subject: "Welcome to buchida!",
-  html: "<h1>Hello!</h1><p>Welcome aboard.</p>"
+  subject: "欢迎使用buchida！",
+  html: "<h1>你好！</h1><p>欢迎加入。</p>"
 )
 
-puts "Email sent: #{result['id']}"
+puts "邮件发送成功: #{result['id']}"
 ```
 
-## Features
+## 特性
 
 - Ruby 3.2+
-- Zero dependencies (stdlib `net/http`)
-- Typed error handling
+- 零依赖（标准库`net/http`）
+- 类型化错误处理
 
-## Documentation
+## 文档
 
-- [Quick Start](https://buchida.com/docs/quickstart)
-- [API Reference](https://buchida.com/docs/sending-email)
+- [快速开始](https://buchida.com/zh/docs/quickstart)
+- [API参考](https://buchida.com/zh/docs/sending-email)
 - [GitHub](https://github.com/Vyblor/buchida-ruby)
 
-## License
+## 许可证
 
 MIT
