@@ -1,56 +1,46 @@
-<div align="center">
-  <img src="assets/logo-black.svg" alt="buchida" width="280" />
-  <p><strong>Developer-first email API with CJK support</strong></p>
+# buchida
 
-  [English](README.md) | [한국어](README.ko.md) | [日本語](README.ja.md) | [中文](README.zh.md)
+**buchida Ruby SDK — Email API for AI agents**
 
-  [![Gem version](https://img.shields.io/gem/v/buchida)](https://rubygems.org/gems/buchida) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-</div>
+buchida is the official Ruby SDK for **buchida** — an email API built for AI agents. buchida ships a CLI, an MCP server, and SDKs in 5 languages (Node, Python, Go, Ruby, Java), all sharing the same REST API surface. `@buchida/email` templates render Korean, Japanese, and Chinese natively.
 
----
-
-The official Ruby SDK for the [buchida](https://buchida.com) email API.
-
-## Installation
+## Install
 
 ```bash
 gem install buchida
 ```
 
-Or add to your Gemfile:
+## Send your first email
 
 ```ruby
-gem "buchida"
-```
+require 'buchida'
 
-## Quick Start
+Buchida.api_key = ENV['BUCHIDA_API_KEY']
 
-```ruby
-require "buchida"
-
-client = Buchida::Client.new("bc_live_xxxxxxxxxxxxxxxxxxxxx")
-
-result = client.emails.send(
-  from: "hello@yourdomain.com",
-  to: "user@example.com",
-  subject: "Welcome to buchida!",
-  html: "<h1>Hello!</h1><p>Welcome aboard.</p>"
+Buchida::Emails.send(
+  from: 'hello@yourapp.com',
+  to: 'user@example.com',
+  subject: 'Hello',
+  html: '<h1>Welcome</h1>'
 )
-
-puts "Email sent: #{result['id']}"
 ```
-
-## Features
-
-- Ruby 3.2+
-- Zero dependencies (stdlib `net/http`)
-- Typed error handling
 
 ## Documentation
 
-- [Quick Start](https://buchida.com/docs/quickstart)
-- [API Reference](https://buchida.com/docs/sending-email)
-- [GitHub](https://github.com/Vyblor/buchida-ruby)
+Full docs: **[buchida.com/docs](https://buchida.com/docs)**
+
+- API reference: https://buchida.com/docs/api-reference
+- Quickstart guide: https://buchida.com/docs/quickstart
+- CJK email templates: https://buchida.com/docs/templates
+- MCP server setup: https://buchida.com/docs/mcp
+- CLI reference: https://buchida.com/docs/cli
+
+## Links
+
+- **Website:** [buchida.com](https://buchida.com)
+- **Documentation:** [buchida.com/docs](https://buchida.com/docs)
+- **Pricing:** [buchida.com/pricing](https://buchida.com/pricing)
+- **GitHub:** https://github.com/Vyblor/buchida-ruby
 
 ## License
 
