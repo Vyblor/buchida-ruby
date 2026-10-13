@@ -8,11 +8,11 @@ module Buchida
 			end
 
 			def create(name:, permission:)
-				@client.request(:post, "/api-keys", { name: name, permission: permission })
+				@client.request_object(:post, "/api-keys", { name: name, permission: permission })
 			end
 
 			def list
-				@client.request(:get, "/api-keys")
+				@client.request_list(:get, "/api-keys")
 			end
 
 			def delete(id)

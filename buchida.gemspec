@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 	s.name        = "buchida"
-	s.version     = "0.1.2"
+	s.version     = "0.2.0"
 	s.summary     = "Official Ruby SDK for buchida email API"
 	s.description = "Official Ruby SDK for the buchida email API. Send transactional and marketing emails via buchida's REST API with native CJK template support."
 	s.authors     = ["buchida"]

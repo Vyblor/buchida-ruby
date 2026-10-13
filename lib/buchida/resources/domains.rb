@@ -8,19 +8,19 @@ module Buchida
 			end
 
 			def create(name:)
-				@client.request(:post, "/domains", { name: name })
+				@client.request_object(:post, "/domains", { name: name })
 			end
 
 			def list
-				@client.request(:get, "/domains")
+				@client.request_list(:get, "/domains")
 			end
 
 			def get(id)
-				@client.request(:get, "/domains/#{id}")
+				@client.request_object(:get, "/domains/#{id}")
 			end
 
 			def verify(id)
-				@client.request(:post, "/domains/#{id}/verify")
+				@client.request_object(:post, "/domains/#{id}/verify")
 			end
 		end
 	end

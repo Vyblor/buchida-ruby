@@ -8,11 +8,11 @@ module Buchida
 			end
 
 			def create(url:, events:)
-				@client.request(:post, "/webhooks", { url: url, events: events })
+				@client.request_object(:post, "/webhooks", { url: url, events: events })
 			end
 
 			def list
-				@client.request(:get, "/webhooks")
+				@client.request_list(:get, "/webhooks")
 			end
 
 			def delete(id)

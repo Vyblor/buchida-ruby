@@ -22,10 +22,11 @@ gem install buchida
 ```ruby
 require 'buchida'
 
-Buchida.api_key = ENV['BUCHIDA_API_KEY']
+client = Buchida::Client.new(ENV['BUCHIDA_API_KEY'])
 
-Buchida::Emails.send(
+client.emails.send(
   from: 'hello@yourapp.com',
+  from_name: 'Your App',
   to: 'user@example.com',
   subject: '안녕하세요',
   html: '<h1>환영합니다</h1>'

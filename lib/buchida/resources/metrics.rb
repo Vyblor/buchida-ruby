@@ -8,10 +8,11 @@ module Buchida
 			end
 
 			def get(from:, to:, granularity: nil)
-				params = { from: from, to: to }
+				# The API filters on from_date/to_date; plain from/to were silently ignored.
+				params = { from_date: from, to_date: to }
 				params[:granularity] = granularity if granularity
 				qs = URI.encode_www_form(params)
-				@client.request(:get, "/metrics?#{qs}")
+				@client.request_object(:get, "/metrics?#{qs}")
 			end
 		end
 	end

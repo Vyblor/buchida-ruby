@@ -6,7 +6,7 @@ require "json"
 
 module Buchida
 	class Client
-		DEFAULT_BASE_URL = "https://api.buchida.com"
+		DEFAULT_BASE_URL = "https://api.buchida.com/v1"
 		DEFAULT_TIMEOUT = 30
 
 		attr_reader :emails, :domains, :api_keys, :webhooks, :templates, :metrics
@@ -57,7 +57,31 @@ module Buchida
 			JSON.parse(response.body)
 		end
 
+		# Request returning a single object: unwraps `{ "data" => {...} }` (204 => nil).
+		def request_object(method, path, body = nil)
+			unwrap_object(request(method, path, body))
+		end
+
+		# Request returning a list: unwraps `{ "data" => [...], "cursor" =>, "hasMore" => }`.
+		def request_list(method, path, body = nil)
+			resp = request(method, path, body)
+			if resp.is_a?(Hash)
+				ListResult.new(resp["data"] || [], cursor: resp["cursor"], has_more: resp["hasMore"] || resp["has_more"] || false)
+			elsif resp.is_a?(Array)
+				ListResult.new(resp)
+			else
+				resp
+			end
+		end
+
 		private
+
+		def unwrap_object(resp)
+			return resp unless resp.is_a?(Hash)
+
+			inner = resp.key?("data") ? resp["data"] : resp
+			inner.is_a?(Hash) ? Result[inner] : inner
+		end
 
 		def handle_error(response)
 			body = begin
@@ -66,7 +90,14 @@ module Buchida
 				{ "message" => response.message }
 			end
 
-			message = body["message"] || response.message
+			err = body["error"]
+			if err.is_a?(Hash)
+				message = err["message"] || response.message
+				error_code = err["code"]
+			else
+				message = body["message"] || response.message
+				error_code = body["code"]
+			end
 			status = response.code.to_i
 
 			case status
@@ -74,7 +105,7 @@ module Buchida
 			when 404 then raise NotFoundError, message
 			when 422 then raise ValidationError, message
 			when 429 then raise RateLimitError, message
-			else raise Error.new(message, status, body["code"])
+			else raise Error.new(message, status, error_code)
 			end
 		end
 	end

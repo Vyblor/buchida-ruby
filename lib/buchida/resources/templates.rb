@@ -8,11 +8,11 @@ module Buchida
 			end
 
 			def list
-				@client.request(:get, "/templates")
+				@client.request_list(:get, "/templates")
 			end
 
 			def get(id)
-				@client.request(:get, "/templates/#{id}")
+				@client.request_object(:get, "/templates/#{id}")
 			end
 		end
 	end

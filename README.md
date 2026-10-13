@@ -22,15 +22,40 @@ gem install buchida
 ```ruby
 require 'buchida'
 
-Buchida.api_key = ENV['BUCHIDA_API_KEY']
+client = Buchida::Client.new(ENV['BUCHIDA_API_KEY'])
 
-Buchida::Emails.send(
+result = client.emails.send(
   from: 'hello@yourapp.com',
+  from_name: 'Your App',
   to: 'user@example.com',
   subject: 'Hello',
   html: '<h1>Welcome</h1>'
 )
+puts result['id'], result['status'] # unwrapped payload (Hash with String keys)
+
+# Lists are Arrays with #cursor / #has_more
+page = client.emails.list(limit: 20)
+page.each { |e| puts e['id'] }
+next_page = client.emails.list(cursor: page.cursor) if page.has_more
+
+# Batch: one result per input, each with "data" or "error"
+client.emails.send_batch([
+  { from: 'hello@yourapp.com', to: 'a@example.com', subject: 'A', text: 'hi' }
+]).each { |r| puts(r['data'] || r['error']) }
 ```
+
+## Upgrading to 0.2
+
+- The API wraps responses in `{ "data" => ... }`; the SDK now returns the unwrapped payload.
+  `emails.send` / `get`, `domains.create` / `get` / `verify`, `api_keys.create`,
+  `webhooks.create`, `templates.get` and `metrics.get` return the object Hash (`result['id']`);
+  `emails.list`, `emails.send_batch` and the other `list` methods return an Array
+  (`#cursor` / `#has_more` on paged lists; batch entries are Hashes with `'data'` or `'error'`).
+- Backwards compatible: `result['data']` / `result[:data]` on objects, and `page['data']`,
+  `page['cursor']`, `page['hasMore']` on lists still work, but print a one-time deprecation
+  warning. Migrate to the unwrapped form; the shim will be removed in a future major version.
+- Request bodies now use snake_case (`reply_to`, `scheduled_at`) and `from_name` is supported.
+  API errors with a nested `{ "error": { "code", "message" } }` body are surfaced correctly.
 
 ## Documentation
 
